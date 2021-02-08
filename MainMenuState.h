@@ -9,12 +9,15 @@ class MainMenuState :
 {
 private:
 	//Variables
+	Texture backgroundTexture;
 	RectangleShape background;
 	Font font;
 
 	map<string, Button*> buttons;
 
 	//Functions
+	void initVariables();
+	void initBackground();
 	void initFonts();
 	void initKeybinds();
 	void initButtons();

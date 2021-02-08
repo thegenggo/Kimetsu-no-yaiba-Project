@@ -9,6 +9,9 @@ private:
 	//Variables
 	RenderWindow *window;
 	Event sfEvent;
+	vector<VideoMode>  videoModes;
+	ContextSettings windowSettings;
+	bool fullscreen;
 
 	Clock dtClock;
 	float dt;
@@ -20,6 +23,7 @@ private:
 	map<string, int> supportedKeys;
 
 	//Initialization
+	void initVariables();
 	void initWindow();
 	void initKeys();
 	void initStates();

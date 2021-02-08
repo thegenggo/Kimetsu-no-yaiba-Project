@@ -1,36 +1,56 @@
 #include "Game.h"
 
+void Game::initVariables()
+{
+	this->window = NULL;
+	this->fullscreen = false;
+	this->dt = 0.f;
+}
+
 void Game::initWindow()
 {
-	std::ifstream ifs("Config/window.ini");
+	ifstream ifs("Config/window.ini");
+	this->videoModes = VideoMode::getFullscreenModes();
 
-	std::string title = "None";
-	sf::VideoMode window_bounds(1920, 1080);
+	string title = "None";
+	VideoMode window_bounds = VideoMode::getDesktopMode();
+	bool fullscreen = false;
 	unsigned framerate_limit = 60;
 	bool vertical_sync_enabled = true;
+	unsigned antialiasing_level = 0;
 
 	if (ifs.is_open())
 	{
 		std::getline(ifs, title);
 		ifs >> window_bounds.width >> window_bounds.height;
+		ifs >> fullscreen;
 		ifs >> framerate_limit;
 		ifs >> vertical_sync_enabled;
+		ifs >> antialiasing_level;
 	}
 
 	ifs.close();
 
-	this->window = new sf::RenderWindow(window_bounds, title);
+
+	this->fullscreen = fullscreen;
+	this->windowSettings.antialiasingLevel = antialiasing_level;
+
+	if(this->fullscreen)
+		this->window = new RenderWindow(window_bounds, title,Style::Fullscreen,windowSettings);
+	else
+		this->window = new RenderWindow(window_bounds, title,Style::Titlebar | Style::Close, windowSettings);
+
 	this->window->setFramerateLimit(framerate_limit);
 	this->window->setVerticalSyncEnabled(vertical_sync_enabled);
 }
 
 void Game::initKeys()
 {
-	std::ifstream ifs("Config/supported_keys.ini");
+	ifstream ifs("Config/supported_keys.ini");
 
 	if (ifs.is_open())
 	{
-		std::string key = "";
+		string key = "";
 		int key_value = 0;
 		
 		while (ifs >> key >> key_value)
@@ -41,15 +61,15 @@ void Game::initKeys()
 
 	ifs.close();
 
-	this->supportedKeys["Escape"] = sf::Keyboard::Key::Escape;
-	this->supportedKeys["A"] = sf::Keyboard::Key::A;
-	this->supportedKeys["D"] = sf::Keyboard::Key::D;
-	this->supportedKeys["W"] = sf::Keyboard::Key::W;
-	this->supportedKeys["S"] = sf::Keyboard::Key::S;
+	this->supportedKeys["Escape"] = Keyboard::Key::Escape;
+	this->supportedKeys["A"] = Keyboard::Key::A;
+	this->supportedKeys["D"] = Keyboard::Key::D;
+	this->supportedKeys["W"] = Keyboard::Key::W;
+	this->supportedKeys["S"] = Keyboard::Key::S;
 
 	for (auto i : this->supportedKeys)
 	{
-		std::cout << i.first << " " << i.second << "\n";
+		cout << i.first << " " << i.second << "\n";
 	}
 }
 
@@ -85,7 +105,7 @@ void Game::mainMenu()
 
 void Game::endApplication()
 {
-	std::cout << "Ending Application!" << "\n";
+	cout << "Ending Application!" << "\n";
 }
 
 void Game::updateDt()
