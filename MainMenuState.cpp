@@ -54,8 +54,8 @@ void MainMenuState::initButtons()
 		L"ตั้งค่า",
 		Color(70, 70, 70, 200), Color(150, 150, 150, 255), Color(20, 20, 20, 200));
 
-	this->buttons["EXIT_STATE"] = new Button(200, 500, 250, 50, &this->font,
-		L"Quit game",
+	this->buttons["EXIT_STATE"] = new Button(200, 400, 250, 50, &this->font,
+		L"ออกจากเกม",
 		Color(100, 100, 100, 200), Color(150, 150, 150, 255), Color(20, 20, 20, 200));
 }
 
@@ -141,7 +141,7 @@ void MainMenuState::render(sf::RenderTarget* target)
 	Text mouseText;
 	mouseText.setPosition(this->mousePosView.x,this->mousePosView.y - 25);
 	mouseText.setFont(this->font);
-	mouseText.setCharacterSize(12);
+	mouseText.setCharacterSize(20);
 	stringstream ss;
 	ss << this->mousePosView.x << " " << this->mousePosView.y;
 	mouseText.setString(ss.str());
