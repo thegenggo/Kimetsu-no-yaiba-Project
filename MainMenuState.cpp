@@ -2,7 +2,7 @@
 
 void MainMenuState::initFonts()
 {
-	if (!this->font.loadFromFile("Fonts/Sarabun-Medium.ttf"))
+	if (!this->font.loadFromFile("Fonts/2005_iannnnnJPG.ttf"))
 	{
 		throw("ERROR::MAINMENUSTATE::COULD NOT LOAD FONT");
 	}
