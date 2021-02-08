@@ -1,7 +1,7 @@
 #ifndef STATE_H
 #define STATE_H
 
-#include "Entity.h"
+#include "Player.h"
 
 class State
 {
@@ -20,7 +20,7 @@ protected:
 	Vector2f mousePosView;
 
 	//Resource
-	vector<Texture> textures;
+	map<string, Texture> textures;
 
 	//Functions
 	virtual void initKeybinds() = 0;
@@ -30,10 +30,8 @@ public:
 	virtual ~State();
 
 	const bool& getQuit() const;
+	void endState();
 
-	virtual void checkForQuit();
-
-	virtual void endState() = 0;
 	virtual void updateMousePositions();
 	virtual void updateInput(const float& dt) = 0;
 	virtual void update(const float& dt) = 0;

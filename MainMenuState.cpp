@@ -78,16 +78,8 @@ MainMenuState::~MainMenuState()
 	}
 }
 
-void MainMenuState::endState()
-{
-	cout << "Ending MainMenuState!" << "\n";
-}
-
 void MainMenuState::updateInput(const float& dt)
 {
-	this->checkForQuit();
-
-	//Input
 	
 }
 
@@ -108,7 +100,7 @@ void MainMenuState::updateButtons()
 	//Quit the game
 	if (this->buttons["EXIT_STATE"]->isPressed())
 	{
-		this->quit = true;
+		this->endState();
 	}
 }
 

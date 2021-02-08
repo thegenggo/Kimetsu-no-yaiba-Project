@@ -13,7 +13,7 @@ private:
     void initComponents();
 
 public:
-    Player(float x, float y, Texture* texture);
+    Player(float x, float y, Texture& texture);
     virtual ~Player();
 
     //Functions

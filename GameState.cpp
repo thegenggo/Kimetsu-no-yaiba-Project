@@ -1,5 +1,7 @@
 #include "GameState.h"
 
+
+//Initializers Functions
 void GameState::initKeybinds()
 {
 	std::ifstream ifs("Config/gamestate_keybinds.ini");
@@ -18,42 +20,54 @@ void GameState::initKeybinds()
 	ifs.close();
 }
 
+void GameState::initTextures()
+{
+	if (!this->textures["PLAYER_IDLE"].loadFromFile("Resources/Images/Sprites/Players/test.png"))
+	{
+		throw ("ERROR::GAME_STATE::COULD_NOT_LOAD_PLAYER_IDLE_TEXTURE");
+	}
+}
+
+void GameState::initPlayers()
+{
+	this->player = new Player(0, 0, this->textures["PLAYER_IDLE"]);
+}
+
+
+//Constructors / Destructors
 GameState::GameState(RenderWindow* window, map<string, int>* supportedKeys, stack<State*>* states)
 	: State(window, supportedKeys,states)
 {
 	this->initKeybinds();
+	this->initTextures();
+	this->initPlayers();
 }
 
 GameState::~GameState()
 {
-
-}
-
-void GameState::endState()
-{
-	std::cout << "Ending GameState!" << "\n";
+	delete this->player;
 }
 
 void GameState::updateInput(const float& dt)
 {
-	this->checkForQuit();
-
-	//Input
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("MOVE_LEFT"))))
-		this->player.move(dt, -1.f, 0.f);
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("MOVE_RIGHT"))))
-		this->player.move(dt, 1.f, 0.f);
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("MOVE_UP"))))
-		this->player.move(dt, 0.f, -1.f);
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("MOVE_DOWN"))))
-		this->player.move(dt, 0.f, 1.f);
+	//Update player Input
+	if (Keyboard::isKeyPressed(Keyboard::Key(this->keybinds.at("MOVE_LEFT"))))
+		this->player->move(dt, -1.f, 0.f);
+	if (Keyboard::isKeyPressed(Keyboard::Key(this->keybinds.at("MOVE_RIGHT"))))
+		this->player->move(dt, 1.f, 0.f);
+	if (Keyboard::isKeyPressed(Keyboard::Key(this->keybinds.at("MOVE_UP"))))
+		this->player->move(dt, 0.f, -1.f);
+	if (Keyboard::isKeyPressed(Keyboard::Key(this->keybinds.at("MOVE_DOWN"))))
+		this->player->move(dt, 0.f, 1.f);
+	if (Keyboard::isKeyPressed(Keyboard::Key(this->keybinds.at("CLOSE"))))
+		this->endState();
 }
 
 void GameState::update(const float& dt)
 {
 	this->updateMousePositions();
 	this->updateInput(dt);
-	this->player.update(dt);
+	this->player->update(dt);
 }
 
 void GameState::render(sf::RenderTarget* target)
@@ -62,5 +76,5 @@ void GameState::render(sf::RenderTarget* target)
 		target = this->window;
 
 
-	this->player.render(target);
+	this->player->render(target);
 }
